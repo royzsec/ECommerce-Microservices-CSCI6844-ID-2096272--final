@@ -1,0 +1,63 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  productservice:
+    build: ./ProductService
+    container_name: productservice
+    ports:
+      - "5001:8080"
+    depends_on:
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  customerservice:
+    build: ./CustomerService
+    container_name: customerservice
+    ports:
+      - "5002:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  orderservice:
+    build: ./OrderService
+    container_name: orderservice
+    ports:
+      - "5003:8080"
+    depends_on:
+      - rabbitmq
+      - productservice
+      - customerservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  paymentservice:
+    build: ./PaymentService
+    container_name: paymentservice
+    ports:
+      - "5004:8080"
+    depends_on:
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  apigateway:
+    build: ./ApiGateway
+    container_name: apigateway
+    ports:
+      - "5005:8080"
+    depends_on:
+      - productservice
+      - customerservice
+      - orderservice
+      - paymentservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
