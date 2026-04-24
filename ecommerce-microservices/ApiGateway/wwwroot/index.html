@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce API Gateway</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { padding: 20px; background-color: #f8f9fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }
+        .card { margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 10px; font-size: 12px; max-height: 200px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>E-Commerce API Gateway</h1>
+            <p class="mb-0">Powered by Ocelot - Central entry point for all microservices</p>
+            <small>Gateway URL: http://localhost:5005</small>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <strong>Products Management</strong>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-primary btn-sm mb-2" onclick="loadProducts()">Load All Products</button>
+                        <div id="productsLoading" style="display:none;">Loading...</div>
+                        <pre id="productsResult">Click Load Products to view data</pre>
+                        <hr>
+                        <h6>Create New Product</h6>
+                        <div class="mb-2">
+                            <input type="text" id="productName" class="form-control" placeholder="Product Name">
+                        </div>
+                        <div class="mb-2">
+                            <input type="number" id="productPrice" class="form-control" placeholder="Price">
+                        </div>
+                        <div class="mb-2">
+                            <input type="number" id="productStock" class="form-control" placeholder="Stock Quantity">
+                        </div>
+                        <button class="btn btn-success btn-sm" onclick="createProduct()">Create Product</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <strong>Customers Management</strong>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-info btn-sm mb-2" onclick="loadCustomers()">Load All Customers</button>
+                        <div id="customersLoading" style="display:none;">Loading...</div>
+                        <pre id="customersResult">Click Load Customers to view data</pre>
+                        <hr>
+                        <h6>Create New Customer</h6>
+                        <div class="mb-2">
+                            <input type="text" id="customerName" class="form-control" placeholder="Customer Name">
+                        </div>
+                        <div class="mb-2">
+                            <input type="email" id="customerEmail" class="form-control" placeholder="Email Address">
+                        </div>
+                        <button class="btn btn-success btn-sm" onclick="createCustomer()">Create Customer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <strong>Orders Management</strong>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success btn-sm mb-2" onclick="loadOrders()">Load All Orders</button>
+                        <div id="ordersLoading" style="display:none;">Loading...</div>
+                        <pre id="ordersResult">Click Load Orders to view data</pre>
+                        <hr>
+                        <h6>Create New Order</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="number" id="orderCustomerId" class="form-control" placeholder="Customer ID">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" id="orderProductId" class="form-control" placeholder="Product ID">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" id="orderQuantity" class="form-control" placeholder="Quantity">
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-primary btn-sm" onclick="createOrder()">Create Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const GATEWAY = 'http://localhost:5005';
+        
+        function loadProducts() {
+            $('#productsLoading').show();
+            $('#productsResult').text('Loading...');
+            $.get(GATEWAY + '/gateway/products')
+                .done(function(data) {
+                    $('#productsResult').text(JSON.stringify(data, null, 2));
+                })
+                .fail(function() {
+                    $('#productsResult').text('Error: Unable to load products. Make sure services are running.');
+                })
+                .always(function() {
+                    $('#productsLoading').hide();
+                });
+        }
+        
+        function createProduct() {
+            const data = {
+                name: $('#productName').val(),
+                price: parseFloat($('#productPrice').val()),
+                stock: parseInt($('#productStock').val())
+            };
+            
+            if (!data.name || !data.price || !data.stock) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            $.ajax({
+                url: GATEWAY + '/gateway/products',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert('Product created successfully!');
+                    $('#productName').val('');
+                    $('#productPrice').val('');
+                    $('#productStock').val('');
+                    loadProducts();
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText);
+                }
+            });
+        }
+        
+        function loadCustomers() {
+            $('#customersLoading').show();
+            $('#customersResult').text('Loading...');
+            $.get(GATEWAY + '/gateway/customers')
+                .done(function(data) {
+                    $('#customersResult').text(JSON.stringify(data, null, 2));
+                })
+                .fail(function() {
+                    $('#customersResult').text('Error: Unable to load customers.');
+                })
+                .always(function() {
+                    $('#customersLoading').hide();
+                });
+        }
+        
+        function createCustomer() {
+            const data = {
+                name: $('#customerName').val(),
+                email: $('#customerEmail').val()
+            };
+            
+            if (!data.name || !data.email) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            $.ajax({
+                url: GATEWAY + '/gateway/customers',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert('Customer created successfully!');
+                    $('#customerName').val('');
+                    $('#customerEmail').val('');
+                    loadCustomers();
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText);
+                }
+            });
+        }
+        
+        function loadOrders() {
+            $('#ordersLoading').show();
+            $('#ordersResult').text('Loading...');
+            $.get(GATEWAY + '/gateway/orders')
+                .done(function(data) {
+                    $('#ordersResult').text(JSON.stringify(data, null, 2));
+                })
+                .fail(function() {
+                    $('#ordersResult').text('Error: Unable to load orders.');
+                })
+                .always(function() {
+                    $('#ordersLoading').hide();
+                });
+        }
+        
+        function createOrder() {
+            const data = {
+                customerId: parseInt($('#orderCustomerId').val()),
+                productId: parseInt($('#orderProductId').val()),
+                quantity: parseInt($('#orderQuantity').val())
+            };
+            
+            if (!data.customerId || !data.productId || !data.quantity) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            $.ajax({
+                url: GATEWAY + '/gateway/orders',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert('Order created successfully!');
+                    $('#orderCustomerId').val('');
+                    $('#orderProductId').val('');
+                    $('#orderQuantity').val('');
+                    loadOrders();
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText);
+                }
+            });
+        }
+        
+        $(document).ready(function() {
+            loadProducts();
+            loadCustomers();
+            loadOrders();
+        });
+    </script>
+</body>
+</html>

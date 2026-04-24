@@ -61,3 +61,11 @@ services:
       - paymentservice
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+
+  blazorfrontend:
+    build: ./BlazorFrontend
+    container_name: blazorfrontend
+    ports:
+      - "5006:80"
+    depends_on:
+      - apigateway
