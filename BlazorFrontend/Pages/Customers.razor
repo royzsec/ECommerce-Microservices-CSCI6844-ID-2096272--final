@@ -1,0 +1,159 @@
+@page "/customers"
+@using BlazorFrontend.Models
+@inject BlazorFrontend.Services.ApiService ApiService
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-users text-info me-2"></i> Customers Management</h2>
+        <button class="btn btn-primary" @onclick="() => showCreateForm = true">
+            <i class="fas fa-user-plus me-2"></i>Add New Customer
+        </button>
+    </div>
+
+    @if (showCreateForm)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Create New Customer</h5>
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label fw-bold">Full Name</label>
+                        <input @bind="newCustomer.Name" class="form-control" />
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label fw-bold">Email Address</label>
+                        <input @bind="newCustomer.Email" class="form-control" />
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <button class="btn btn-success w-100 mt-4" @onclick="CreateCustomer">Save</button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-sm" @onclick="CancelCreateForm">Cancel</button>
+            </div>
+        </div>
+    }
+
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+            <p>Loading customers...</p>
+        </div>
+    }
+    else if (customers.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i>No customers found. Click "Add New Customer" to create one.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var customer in customers)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-user-circle fa-4x" style="color: #764ba2;"></i>
+                            </div>
+                            
+                            @if (editingCustomerId == customer.Id)
+                            {
+                                <div>
+                                    <input @bind="editCustomer.Name" class="form-control mb-2" placeholder="Name" />
+                                    <input @bind="editCustomer.Email" class="form-control mb-2" placeholder="Email" />
+                                    <button class="btn btn-success btn-sm me-2" @onclick="() => UpdateCustomer(customer.Id)">Save</button>
+                                    <button class="btn btn-secondary btn-sm" @onclick="CancelEdit">Cancel</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <h5 class="card-title text-center">@customer.Name</h5>
+                                <hr />
+                                <p><strong>Email:</strong> @customer.Email</p>
+                                <p><strong>ID:</strong> #@customer.Id</p>
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-warning btn-sm" @onclick="() => StartEdit(customer)">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteCustomer(customer.Id)">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<CustomerDto> customers = new();
+    private bool isLoading = true;
+    private bool showCreateForm = false;
+    private CustomerDto newCustomer = new CustomerDto();
+    private int editingCustomerId = 0;
+    private CustomerDto editCustomer = new CustomerDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCustomers();
+    }
+
+    private async Task LoadCustomers()
+    {
+        isLoading = true;
+        customers = await ApiService.GetCustomersAsync() ?? new List<CustomerDto>();
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private void CancelCreateForm()
+    {
+        showCreateForm = false;
+        newCustomer = new CustomerDto();
+    }
+
+    private async Task CreateCustomer()
+    {
+        if (string.IsNullOrWhiteSpace(newCustomer.Name)) return;
+        await ApiService.CreateCustomerAsync(newCustomer);
+        await LoadCustomers();
+        CancelCreateForm();
+    }
+
+    private void StartEdit(CustomerDto customer)
+    {
+        editingCustomerId = customer.Id;
+        editCustomer = new CustomerDto
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Email = customer.Email
+        };
+    }
+
+    private void CancelEdit()
+    {
+        editingCustomerId = 0;
+        editCustomer = new CustomerDto();
+    }
+
+    private async Task UpdateCustomer(int id)
+    {
+        await ApiService.UpdateCustomerAsync(id, editCustomer);
+        await LoadCustomers();
+        CancelEdit();
+    }
+
+    private async Task DeleteCustomer(int id)
+    {
+        if (await ApiService.DeleteCustomerAsync(id))
+        {
+            await LoadCustomers();
+        }
+    }
+}

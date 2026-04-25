@@ -1,0 +1,67 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = BlazorFrontend
+build_property.RootNamespace = BlazorFrontend
+build_property.ProjectDir = /Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Pages/Customers.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3VzdG9tZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Pages/NotFound.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTm90Rm91bmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Pages/Orders.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvT3JkZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Pages/Products.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvV2VhdGhlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL01haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/royzsec/ECommerce-Microservices-CSCI6844-ID-2096272--final/ecommerce-microservices/BlazorFrontend/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
