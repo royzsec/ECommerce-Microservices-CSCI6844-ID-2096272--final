@@ -30,7 +30,7 @@ A full-stack e-commerce platform built with microservices architecture using ASP
 ## Prerequisites
 
 - Docker Desktop installed
-- .NET 8 SDK (optional, for local development)
+- .NET 8 SDK 
 
 ## Run the Project
 
